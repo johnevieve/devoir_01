@@ -1,0 +1,32 @@
+#listeDonne {
+    width: 100%;
+}
+
+#Debutant {
+    border-style: solid;
+    background-color: #66FF33;
+    border-width: 2px;
+    margin: 5px;
+}
+
+#Intermediaire {
+    border-style: solid;
+    background-color: #FFFF66;
+    border-width: 2px;
+    margin: 5px;
+
+}
+
+#Avance {
+    border-style: solid;
+    background-color: #FFC200;
+    border-width: 2px;
+    margin: 5px;
+}
+
+#Expert {
+    border-style: solid;
+    background-color: #FF7A52;
+    border-width: 2px;
+    margin: 5px;
+}

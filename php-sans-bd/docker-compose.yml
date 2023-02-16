@@ -1,0 +1,8 @@
+services:
+  site:
+    container_name: local-site
+    image: php:8.2-apache
+    ports:
+      - 8080:80
+    volumes:
+      - ./site:/var/www/html
