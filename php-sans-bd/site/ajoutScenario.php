@@ -24,12 +24,12 @@ if (isset($_POST['submit'])) {
     if (empty($titre)) {
         $erreurs[] = "Le champ ne peut être vide.";
     }
-    if (empty($endroit)) {
-        $erreurs[] = "Le champ ne peut être vide.";
-    }
-    if (empty($difficulte)) {
-        $erreurs[] = "Le champ ne peut être vide.";
-    }
+//    if (empty($endroit)) {
+//        $erreurs[] = "Le champ ne peut être vide.";
+//    }
+//    if (empty($difficulte)) {
+//        $erreurs[] = "Le champ ne peut être vide.";
+//    }
     if (empty($erreurs)) {
         header("Location: index.php");
         exit();

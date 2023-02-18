@@ -34,3 +34,8 @@
 .erreur {
     color: red;
 }
+
+body {
+    padding: 50px;
+    padding-top: 10px;
+}
