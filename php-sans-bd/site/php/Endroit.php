@@ -8,7 +8,12 @@ class Endroit
     private string $nomEndroit;
     public function __construct($nomEndroit)
     {
-        $this->$nomEndroit = $nomEndroit;
+        $this->nomEndroit = $nomEndroit;
+    }
+
+    public function getNomEndroit() : string
+    {
+        return $this->nomEndroit;
     }
 }
 ?>

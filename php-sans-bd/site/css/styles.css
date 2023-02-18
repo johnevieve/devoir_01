@@ -30,3 +30,7 @@
     border-width: 2px;
     margin: 5px;
 }
+
+.erreur {
+    color: red;
+}

@@ -33,11 +33,11 @@ class Scenario
     protected string $endroit;
     protected Difficulte $difficulte;
 
-    public function __construct(string $titre, string $endroit, Difficulte $difficulte)
+    public function __construct(string $titres, string $endroit, Difficulte $difficulte)
     {
-        $this->$titre = $titre;
-        $this->$endroit = $endroit;
-    /*    $this->$difficulte = $difficulte;*/
+        $this->titre =$titres;
+        $this->endroit = $endroit;
+        $this->difficulte = $difficulte;
     }
 
     public function getTitre() : string
@@ -45,5 +45,14 @@ class Scenario
         return $this->titre;
     }
 
+    public function getEndroit()
+    {
+        return $this->endroit;
+    }
+
+    public function getDifficulte() : Difficulte
+    {
+        return $this->difficulte;
+    }
 }
 ?>
