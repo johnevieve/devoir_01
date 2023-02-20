@@ -63,12 +63,16 @@ class BD
     public function getIdByEndroit($endroit)
     {
         $conn = $this->connectionBD();
-        $query = "SELECT id FROM Endroit WHERE nom = '$endroit'";
-        $result = $conn->query($query);
-        if (!$result) {
-            die($conn->error);
+        $query = "SELECT id FROM Endroit WHERE nom = ?";
+        $stmt = $conn->prepare($query);
+        $stmt->execute([$endroit]);
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        if (!$row) {
+            die("No record found for the location '$endroit'");
         }
-        return $result['id'];
+        $id = $row['id'];
+        $conn = null;
+        return $id;
     }
 
     public function getEndroits()

@@ -87,7 +87,7 @@ if (isset($_POST['submit'])) {
     <br>
     <div class="form-group">
     <label for="difficulte">Difficulte:</label><br>
-    <select class="form-control" id="endroit" name="endroit">
+    <select class="form-control" id="difficulte" name="difficulte">
         <?php
         foreach (Difficulte::cases() as $niveauDifficulter) {
             $nom = $niveauDifficulter->getLevel();
