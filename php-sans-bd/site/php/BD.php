@@ -63,13 +63,12 @@ class BD
     public function getIdByEndroit($endroit)
     {
         $conn = $this->connectionBD();
-        $query = "SELECT ID FROM Endroit WHERE nom = $endroit";
+        $query = "SELECT id FROM Endroit WHERE nom = '$endroit'";
         $result = $conn->query($query);
         if (!$result) {
             die($conn->error);
         }
-
-        return $result['ID'];
+        return $result['id'];
     }
 
     public function getEndroits()
