@@ -30,10 +30,10 @@ enum Difficulte implements Level
 class Scenario
 {
     protected string $titre;
-    protected string $endroit;
+    protected Endroit $endroit;
     protected Difficulte $difficulte;
 
-    public function __construct(string $titres, string $endroit, Difficulte $difficulte)
+    public function __construct(string $titres, Endroit $endroit, Difficulte $difficulte)
     {
         $this->titre =$titres;
         $this->endroit = $endroit;

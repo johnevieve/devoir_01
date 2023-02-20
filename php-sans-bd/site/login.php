@@ -1,4 +1,5 @@
 <?php
+
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
@@ -8,10 +9,12 @@ $usage = $_POST['usage'] ?? "";
 $motPasse = $_POST['motPasse'] ?? "";
 
 if (isset($_POST['submit'])) {
-    if (empty($usage) or empty($motPasse)) {
+    if ($usage != "gabriel" or $motPasse != "ohyeah") {
         $erreurs[] = "Les informations de connextion ne sont pas valides.";
     }
     if (empty($erreurs)) {
+        session_start();
+        $_SESSION["usage"] = $usage;
         header("Location: index.php");
         exit();
     }
@@ -32,23 +35,29 @@ if (isset($_POST['submit'])) {
           integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 </head
 <body>
-<?php if (!empty($erreurs)): ?>
+<a href="index.php">Retour</a>
+
+<?php
+if (!empty($erreurs)): ?>
     <div class="erreur">
-        <?php foreach ($erreurs as $erreur): ?>
+        <?php
+        foreach ($erreurs as $erreur): ?>
             <?= $erreur; ?><br>
-        <?php endforeach; ?>
+        <?php
+        endforeach; ?>
     </div>
-<?php endif; ?>
+<?php
+endif; ?>
+
 <form action="login.php" method="post">
     <label for="usage">Usage :</label><br>
     <input type="text" id="usage" name="usage" value="<?= $usage; ?>">
     <br>
     <label for="motPasse">Mot de passe:</label><br>
     <input type="password" id="motPasse :" name="motPasse" value="<?= $motPasse; ?>">
-
     <br><br>
-
     <input type="submit" name="submit" value="Envoyer">
 </form>
+
 </body>
 </html>

@@ -5,15 +5,16 @@ namespace Cegep\Web4\GestionScenario;
 /** @var string Nom de l'endroit. */
 class Endroit
 {
-    private string $nomEndroit;
-    public function __construct($nomEndroit)
+    private string $nom;
+
+    public function __construct($nom)
     {
-        $this->nomEndroit = $nomEndroit;
+        $this->nom = $nom;
     }
 
     public function getNomEndroit() : string
     {
-        return $this->nomEndroit;
+        return $this->nom;
     }
 }
 ?>

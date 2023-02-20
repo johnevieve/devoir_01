@@ -1,8 +1,19 @@
 <?php
+if (session_status() === PHP_SESSION_NONE)
+{
+    session_start();
+}
 
+if (!isset($_SESSION["usage"]))
+{
+    header("Location: login.php");
+    exit();
+}
 require("php/Endroit.php");
 require("php/Scenario.php");
+require("php/BD.php");
 
+use Cegep\Web4\GestionScenario\BD;
 use Cegep\Web4\GestionScenario\Difficulte;
 use Cegep\Web4\GestionScenario\Endroit;
 
@@ -11,26 +22,20 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 $erreurs = [];
+$bd = new BD();
 $titre = $_POST['titre'] ?? "";
 $endroit = $_POST['endroit'] ?? "";
 $difficulte = $_POST['difficulte'] ?? "";
-$listeEndroits = [
-    new Endroit("Le chat perser"),
-    new Endroit("la patate dort"),
-    new Endroit("patate"),
-    new Endroit("jai envie de te reviller")
-];
+
 if (isset($_POST['submit'])) {
     if (empty($titre)) {
         $erreurs[] = "Le champ ne peut être vide.";
+    }elseif (strlen($titre) < 3 || strlen($titre) > 100) {
+        $erreurs[] = "Entre 3 et 100 caracteres obligatoire";
     }
-//    if (empty($endroit)) {
-//        $erreurs[] = "Le champ ne peut être vide.";
-//    }
-//    if (empty($difficulte)) {
-//        $erreurs[] = "Le champ ne peut être vide.";
-//    }
+
     if (empty($erreurs)) {
+        $bd->setScenario($titre, $endroit, $difficulte);
         header("Location: index.php");
         exit();
     }
@@ -71,26 +76,26 @@ if (isset($_POST['submit'])) {
     <br>
     <div class="form-group">
     <label for="endroit">Endroit:</label><br>
-    <selec class="form-control" id="endroit" name="endroit">
+    <select class="form-control" id="endroit" name="endroit">
         <?php
-        foreach ($listeEndroits as $nomEndroit) {
+        foreach ($bd->getEndroits() as $nomEndroit) {
             $nom = $nomEndroit->getNomEndroit();
             echo "<option value='$nom'>$nom</option>";
         }
         ?>
-    </selec>
+    </select>
     </div>
     <br>
     <div class="form-group">
     <label for="difficulte">Difficulte:</label><br>
-    <selec class="form-control" id="endroit" name="endroit">
+    <select class="form-control" id="endroit" name="endroit">
         <?php
         foreach (Difficulte::cases() as $niveauDifficulter) {
             $nom = $niveauDifficulter->getLevel();
             echo "<option value='$nom'>$nom</option>";
         }
         ?>
-    </selec>
+    </select>
     </div>
     <br><br>
     <input type="submit" name="submit" value="Envoyer">

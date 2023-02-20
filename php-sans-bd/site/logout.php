@@ -1,3 +1,12 @@
+<?php
+if (session_status() === PHP_SESSION_NONE)
+{
+    session_start();
+}
+
+session_destroy();
+?>
+
 <!doctype html>
 <html lang="en">
 <head>

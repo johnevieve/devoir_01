@@ -1,5 +1,8 @@
 <?php
 
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 ?>
 
 <!doctype html>
@@ -20,27 +23,56 @@
 require("php/Endroit.php");
 require("php/Scenario.php");
 require("php/Repertoire.php");
+require("php/BD.php");
 
-use Cegep\Web4\GestionScenario\Endroit;
 use Cegep\Web4\GestionScenario\Scenario;
 use Cegep\Web4\GestionScenario\Repertoire;
 use Cegep\Web4\GestionScenario\Difficulte;
+use Cegep\Web4\GestionScenario\BD;
+
 ?>
 
 <div class="container" id="listeDonne">
-    <a href="ajoutEndroit.php">Ajouter un endroit</a>
-    <a href="ajoutScenario.php">Ajouter un scénario</a>
-    <a href="logout.php">Déconnexion</a>
-    <a href="login.php">Connexion</a>
+    <?php
+    if (isset($_SESSION["usage"])) {
+        ?>
+        <a href="ajoutEndroit.php">Ajouter un endroit</a>
+        <a href="ajoutScenario.php">Ajouter un scénario</a>
+        <a href="logout.php">Déconnexion</a>
+        <?php
+    } else {
+        ?>
+        <a href="login.php">Connexion</a>
+        <?php
+    } ?>
+
     <?php
     $repertoire = new Repertoire();
-    foreach ($repertoire->getScenarios() as $donnee) {
-        ?>
-        <div class='row' id="<?php echo $donnee->getDifficulte()->getLevel(); ?>">
-            <div class="col-md"> <?php echo $donnee->getTitre(); ?> </div>
-            <div class="col-md"> <?php echo $donnee->getEndroit(); ?> </div>
-        </div>
-<?php } ?>
+    $scenarios = $repertoire->getScenarios();
+    if (count($scenarios) <= 0) {
+        echo "<p class='erreur'>Aucun Scenario!!!</p>";
+    } else {
+        usort(
+            $scenarios,
+            function ($a, $b) {
+                return strcmp($a->getTitre(), $b->getTitre());
+            }
+        );
+
+        foreach ($scenarios as $donnee) {
+            ?>
+            <div class='row' id="<?php
+            echo $donnee->getDifficulte()->getLevel(); ?>">
+                <div class="col-md"> <?php
+                    echo $donnee->getTitre(); ?> </div>
+                <div class="col-md"> <?php
+                    echo $donnee->getEndroit(); ?> </div>
+            </div>
+            <?php
+        }
+    } ?>
+
+
 </div>
 
 </body>

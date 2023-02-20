@@ -1,17 +1,50 @@
 <?php
 
+require("php/BD.php");
+require("php/Endroit.php");
+
+use Cegep\Web4\GestionScenario\BD;
+use Cegep\Web4\GestionScenario\Endroit;
+
+
+if (session_status() === PHP_SESSION_NONE)
+{
+    session_start();
+}
+
+if (!isset($_SESSION["usage"]))
+{
+    header("Location: login.php");
+    exit();
+}
+
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 $erreurs = [];
 $nom = $_POST['nom'] ?? "";
+$bd = New BD();
 
 if (isset($_POST['submit'])) {
     if (empty($nom)) {
         $erreurs[] = "Le champ ne peut être vide.";
     }
+    elseif (strlen($nom) < 3 || strlen($nom) > 20) {
+        $erreurs[] = "Entre 3 et 20 caracteres obligatoire";
+    }
+
+    $endroits = $bd->getEndroits();
+    foreach ($endroits as $endroit)
+    {
+        if($endroit->getNomEndroit() == $nom)
+        {
+            $erreurs[] = "Cette endroit existe déja";
+        }
+    }
+
     if (empty($erreurs)) {
+        $bd->setEndroit($nom);
         header("Location: index.php");
         exit();
     }
