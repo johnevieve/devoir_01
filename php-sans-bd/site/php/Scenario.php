@@ -22,6 +22,7 @@ enum Difficulte implements Level
             default => "Expert",
         };
     }
+
 }
 
 /** @var string Titre du scénario. */
@@ -33,7 +34,7 @@ class Scenario
     protected Endroit $endroit;
     protected Difficulte $difficulte;
 
-    public function __construct(string $titres, Endroit $endroit, Difficulte $difficulte)
+    public function __construct(string $titres, Endroit $endroit, $difficulte)
     {
         $this->titre =$titres;
         $this->endroit = $endroit;

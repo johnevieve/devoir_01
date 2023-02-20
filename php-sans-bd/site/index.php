@@ -34,6 +34,8 @@ use Cegep\Web4\GestionScenario\BD;
 
 <div class="container" id="listeDonne">
     <?php
+
+    $bd = New BD();
     if (isset($_SESSION["usage"])) {
         ?>
         <a href="ajoutEndroit.php">Ajouter un endroit</a>
@@ -47,26 +49,25 @@ use Cegep\Web4\GestionScenario\BD;
     } ?>
 
     <?php
-    $repertoire = new Repertoire();
-    $scenarios = $repertoire->getScenarios();
-    if (count($scenarios) <= 0) {
+    $repertoire = $bd->getRepertoire();
+    if (count($repertoire) <= 0) {
         echo "<p class='erreur'>Aucun Scenario!!!</p>";
     } else {
         usort(
-            $scenarios,
+            $repertoire,
             function ($a, $b) {
                 return strcmp($a->getTitre(), $b->getTitre());
             }
         );
 
-        foreach ($scenarios as $donnee) {
+        foreach ($repertoire as $donnee) {
             ?>
             <div class='row' id="<?php
             echo $donnee->getDifficulte()->getLevel(); ?>">
                 <div class="col-md"> <?php
                     echo $donnee->getTitre(); ?> </div>
                 <div class="col-md"> <?php
-                    echo $donnee->getEndroit(); ?> </div>
+                    echo $donnee->getEndroit()->getNomEndroit(); ?> </div>
             </div>
             <?php
         }

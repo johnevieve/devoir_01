@@ -100,7 +100,7 @@ class BD
     {
         $conn = $this->connectionBD();
         $idEndroit = $this->getIdByEndroit($nomEndroit);
-        $query = "INSERT INTO Scenario VALUES(NULL, $titre, $idEndroit, $difficulter)";
+        $query = "INSERT INTO Scenario VALUES(NULL, '$titre', '$idEndroit', '$difficulter')";
         $result = $conn->query($query);
         if (!$result) {
             die($conn->error);
@@ -110,10 +110,10 @@ class BD
 
     public function getRepertoire()
     {
-        $repertoire = new Repertoire();
+        $repertoire = [];
         $conn = $this->connectionBD();
 
-        $query = "SELECT * FROM donnees";
+        $query = "SELECT * FROM Scenario";
         $result = $conn->query($query);
 
         if (!$result) {
@@ -124,8 +124,15 @@ class BD
 
         foreach ($rows as $row)
         {
-            echo $row['Titre'], $row['Endroit'], $row['Difficulter'];
+            $difficulter =  match ($row['Difficulter']) {
+                "Debutant" => Difficulte::Debutant,
+                "Intermediaire" => Difficulte::Intermediaire,
+                "Avance" => Difficulte::Avance,
+                default => Difficulte::Avance,
+            };
 
+            $endroit = $this->getEndroitById($row['Endroit']);
+            $repertoire[] = new Scenario($row['Titre'], $endroit, $difficulter);
         }
 
         return $repertoire;

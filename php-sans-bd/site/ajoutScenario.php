@@ -1,11 +1,10 @@
 <?php
-if (session_status() === PHP_SESSION_NONE)
-{
+
+if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-if (!isset($_SESSION["usage"]))
-{
+if (!isset($_SESSION["usage"])) {
     header("Location: login.php");
     exit();
 }
@@ -30,9 +29,21 @@ $difficulte = $_POST['difficulte'] ?? "";
 if (isset($_POST['submit'])) {
     if (empty($titre)) {
         $erreurs[] = "Le champ ne peut être vide.";
-    }elseif (strlen($titre) < 3 || strlen($titre) > 100) {
+    } elseif (strlen($titre) < 3 || strlen($titre) > 100) {
         $erreurs[] = "Entre 3 et 100 caracteres obligatoire";
     }
+
+    foreach ($bd->getRepertoire() as $scenario) {
+        if ($scenario->getTitre() === $titre) {
+            foreach ($bd->getEndroits() as $nom) {
+                if ($nom->getNomEndroit() === $endroit) {
+                    $erreurs[] = "Scenario deja exitant";
+                    break 2;
+                }
+            }
+        }
+    }
+
     if (empty($erreurs)) {
         $bd->setScenario($titre, $endroit, $difficulte);
         header("Location: index.php");
@@ -74,27 +85,27 @@ if (isset($_POST['submit'])) {
     endif; ?>
     <br>
     <div class="form-group">
-    <label for="endroit">Endroit:</label><br>
-    <select class="form-control" id="endroit" name="endroit">
-        <?php
-        foreach ($bd->getEndroits() as $nomEndroit) {
-            $nom = $nomEndroit->getNomEndroit();
-            echo "<option value='$nom'>$nom</option>";
-        }
-        ?>
-    </select>
+        <label for="endroit">Endroit:</label><br>
+        <select class="form-control" id="endroit" name="endroit">
+            <?php
+            foreach ($bd->getEndroits() as $nomEndroit) {
+                $nom = $nomEndroit->getNomEndroit();
+                echo "<option value='$nom'>$nom</option>";
+            }
+            ?>
+        </select>
     </div>
     <br>
     <div class="form-group">
-    <label for="difficulte">Difficulte:</label><br>
-    <select class="form-control" id="difficulte" name="difficulte">
-        <?php
-        foreach (Difficulte::cases() as $niveauDifficulter) {
-            $nom = $niveauDifficulter->getLevel();
-            echo "<option value='$nom'>$nom</option>";
-        }
-        ?>
-    </select>
+        <label for="difficulte">Difficulte:</label><br>
+        <select class="form-control" id="difficulte" name="difficulte">
+            <?php
+            foreach (Difficulte::cases() as $niveauDifficulter) {
+                $nom = $niveauDifficulter->getLevel();
+                echo "<option value='$nom'>$nom</option>";
+            }
+            ?>
+        </select>
     </div>
     <br><br>
     <input type="submit" name="submit" value="Envoyer">
