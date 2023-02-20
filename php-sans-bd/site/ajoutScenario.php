@@ -33,7 +33,6 @@ if (isset($_POST['submit'])) {
     }elseif (strlen($titre) < 3 || strlen($titre) > 100) {
         $erreurs[] = "Entre 3 et 100 caracteres obligatoire";
     }
-
     if (empty($erreurs)) {
         $bd->setScenario($titre, $endroit, $difficulte);
         header("Location: index.php");

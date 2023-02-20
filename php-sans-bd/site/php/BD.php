@@ -39,7 +39,7 @@ class BD
         $conn = null;
     }
 
-    public function getEndroit($id)
+    public function getEndroitById($id)
     {
         $conn = $this->connectionBD();
 
@@ -58,6 +58,18 @@ class BD
             }
         }
 
+    }
+
+    public function getIdByEndroit($endroit)
+    {
+        $conn = $this->connectionBD();
+        $query = "SELECT ID FROM Endroit WHERE nom = $endroit";
+        $result = $conn->query($query);
+        if (!$result) {
+            die($conn->error);
+        }
+
+        return $result['ID'];
     }
 
     public function getEndroits()
@@ -83,10 +95,9 @@ class BD
 
     public function setScenario($titre, $nomEndroit, $difficulter)
     {
-        
         $conn = $this->connectionBD();
-
-        $query = "INSERT INTO donnees VALUES(NULL, $titre, $idEndroit, $difficulter)";
+        $idEndroit = $this->getIdByEndroit($nomEndroit);
+        $query = "INSERT INTO Scenario VALUES(NULL, $titre, $idEndroit, $difficulter)";
         $result = $conn->query($query);
         if (!$result) {
             die($conn->error);
